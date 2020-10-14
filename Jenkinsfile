@@ -1,36 +1,25 @@
-podTemplate(
-  label: 'jenkins-pipeline', 
-  inheritFrom: 'default',
-  containers: [
-  ]
-) {
-  node ('jenkins-pipeline') {
-    stage('Get latest version of code') {
-      checkout scm
+pipeline {
+
+  agent any
+  tools {nodejs "node"}
+
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/andreipope/HelloWorld'
+      }
     }
 
-    stage('Code Formatting checks') {
+    stage('Install dependencies') {
+      steps {
+        sh 'npm install'
+      }
     }
 
-    stage('Build') {
-    }
-
-    stage('Run Unit Tests') {
-    }
-
-    stage('Run Code Coverage') {
-    }
-
-    stage('Deploy Local') {
-    }
-
-    stage('Run Integration Tests') {
-    }
-
-    stage('Deploy Production') {
-    }
-    
-    stage('Run Post Deployment Tests') {
-    }
-  } // end node
-} // end podTemplate
+    stage('Test') {
+      steps {
+         sh 'npm test'
+      }
+    }      
+  }
+}

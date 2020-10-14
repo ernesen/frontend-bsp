@@ -1,12 +1,42 @@
-pipeline {
-    agent any
-    stages {
-        stage('Test') {
-            steps {
-               echo "hello" 
-            }
-        }
+def label = "worker-${UUID.randomUUID().toString()}"
+
+podTemplate(label: label, containers: [
+  containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true)
+],
+volumes: [
+]) {
+  node(label) {
+    properties(
+      [
+        [
+          $class  : 'jenkins.model.BuildDiscarderProperty',
+          strategy: [
+            $class: 'LogRotator',
+            numToKeepStr: '50'
+          ]
+        ],
+        pipelineTriggers(
+          [
+            [
+              $class: 'hudson.triggers.TimerTrigger',
+              spec  : "*/5 * * * *"
+            ]
+          ]
+        )
+      ]
+    )
+
+    stage('Run kubectl') {
+      container('kubectl') {
+        withEnv([
+            "ES_URL=elasticsearch.storage:9200"
+        ]){
+            sh """
+               kubectl run -it --rm=true busybox-curl --image=yauritux/busybox-curl --restart=Never -- curl "$ES_URL"
+            """
+      }
     }
+  }
 }
 
 /*

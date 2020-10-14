@@ -1,7 +1,8 @@
 pipeline {
 
-  agent any
-  tools {nodejs "node"}
+  agent {
+    docker { image 'ernesen/migratecf:3.0' }
+  }
 
   stages {
     stage('Cloning Git') {

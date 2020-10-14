@@ -27,13 +27,14 @@ volumes: [
     )
 
     stage('Run kubectl') {
-      container('kubectl') {
-        withEnv([
-            "ES_URL=elasticsearch.storage:9200"
-        ]){
-            sh """
-               kubectl run -it --rm=true busybox-curl --image=yauritux/busybox-curl --restart=Never -- curl "$ES_URL"
-            """
+        container('kubectl') {
+          withEnv([
+              "ES_URL=elasticsearch.storage:9200"
+          ]){
+              sh """
+                kubectl run -it --rm=true busybox-curl --image=yauritux/busybox-curl --restart=Never -- curl "$ES_URL"
+              """
+        }
       }
     }
   }

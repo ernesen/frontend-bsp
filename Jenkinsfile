@@ -25,6 +25,7 @@ podTemplate(label: 'mypod', containers: [
             }
         }
 
+   /*
         stage('Maven Build') {
             container('maven') {
                 dir('hello-world-war/') {
@@ -34,5 +35,6 @@ podTemplate(label: 'mypod', containers: [
                 }
             }
         }
+    */
     }
 }

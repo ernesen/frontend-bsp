@@ -1,3 +1,15 @@
+pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+               echo "hello" 
+            }
+        }
+    }
+}
+
+/*
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', command: 'cat', ttyEnabled: true),
@@ -25,7 +37,7 @@ podTemplate(label: 'mypod', containers: [
             }
         }
 
-   /*
+  
         stage('Maven Build') {
             container('maven') {
                 dir('hello-world-war/') {
@@ -35,6 +47,6 @@ podTemplate(label: 'mypod', containers: [
                 }
             }
         }
-    */
     }
 }
+*/
